@@ -26,6 +26,7 @@ gem "stimulus-rails"
 
 gem 'dotenv-rails'
 
+gem 'jsonapi-serializer'
 gem 'foreman', '~> 0.87.2'
 
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
