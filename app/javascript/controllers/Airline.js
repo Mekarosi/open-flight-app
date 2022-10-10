@@ -1,19 +1,42 @@
 import React, { useState, useEffect } from 'react'
+import axios from 'axios'
+import Header from './Header'
+
 
 const Airline = (props) => {
 
     const [airline, setAirline] = useState({})
-    const [review, setReview] = useState({})
+    const [reviews, setReviews] = useState({})
+    const [loaded, setLoaded] = useState(false)
 
     useEffect(() => {
        const slug = props.match.params.slug
        const url= `/api/v1/airlines/${slug}`
-       console.log(props)
+      
+       axios.get(url)
+       .then(resp => {
+        setAirline(resp.data)
+        setLoaded(true)
+     } )
+       .catch(error => console.log(error))
     }, [])
 
 
     return (
-        <h1>This is the Airline#show view for our app</h1>
+        <div className='wrapper'>
+            <div className='column'>
+                { loaded &&
+                    <Header 
+                    attributes={airline.data.attributes}
+                    reviews={airline.included}
+                    />
+                }
+                <div className='reviews'></div>
+            </div>
+            <div className='column'>
+                <div className='review-form'>[Review form Goes here.]</div>
+            </div>
+        </div>
     )
     
 }
