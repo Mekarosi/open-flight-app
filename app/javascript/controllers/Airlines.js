@@ -39,7 +39,7 @@ const Airlines = () => {
       // Update airlines in our state
       axios.get('api/v1/airlines.json')
       .then(resp => setAirlines(resp.data.data))
-      .catch(resp => console.log(resp))    
+      .catch(error => console.log(error))    
     }, [airlines.length])
     
     const grid = airlines.map(item => {
