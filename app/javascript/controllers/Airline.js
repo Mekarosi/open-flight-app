@@ -44,6 +44,18 @@ const Airline = (props) => {
        .catch(error => console.log(error))
     }, [])
 
+    const handleChange = (e) => {
+        e.preventDefault()
+
+       setReview(Object.assign({}, review, {[e.target.name] : e.target.value}))
+      
+       console.log('review:', review )
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+    }
+
 
     return (
         <Wrapper>
@@ -61,7 +73,12 @@ const Airline = (props) => {
                 </Column>
                 
                 <Column>
-                <ReviewForm />
+                <ReviewForm 
+                    handleChange={handleChange}
+                    handleSubmit={handleSubmit}
+                    attributes={airline.data.attributes}
+                    review={review}
+                />
                 </Column>
        </Fragment> 
 }
