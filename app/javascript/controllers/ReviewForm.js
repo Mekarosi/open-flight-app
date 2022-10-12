@@ -82,7 +82,8 @@ const Wrapper = styled.div`
 
 const SubmitBtn = styled.div`
     color: #fff;
-    background: #333;
+    text-align: center;
+    background: green;
     border-radius: 4px;
     padding:  12px;
     font-size: 18px;

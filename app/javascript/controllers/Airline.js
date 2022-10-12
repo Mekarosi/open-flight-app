@@ -10,6 +10,7 @@ const Wrapper = styled.div`
     margin-right: auto;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
+   
 `
 const Column = styled.div`
     background: #fff;
