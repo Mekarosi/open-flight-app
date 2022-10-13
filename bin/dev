@@ -1,3 +1,4 @@
+
 #!/usr/bin/env bash
 
 if ! foreman version &> /dev/null
