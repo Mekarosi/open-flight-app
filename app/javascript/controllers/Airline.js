@@ -2,6 +2,7 @@ import React, { useState, useEffect, Fragment } from 'react'
 import axios from 'axios'
 import Header from './Header'
 import ReviewForm from './ReviewForm'
+import Review from './Review'
 import styled from 'styled-components'
 
 
@@ -49,8 +50,6 @@ const Airline = (props) => {
         e.preventDefault()
 
        setReview(Object.assign({}, review, {[e.target.name] : e.target.value}))
-      
-       console.log('review:', review )
     }
 
     const handleSubmit = (e) => {
@@ -59,8 +58,10 @@ const Airline = (props) => {
         const csrfToken = document.querySelector('[name=crsf-token]')?.content    
         axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken
         
-        const airline_id = airline.data.id
-        axios.post('/api/v1/reviews', {review, airline_id}).then(resp => {
+        //Get our airline id
+        const airline_id = parseInt(airline.data.id)
+        axios.post('/api/v1/reviews', {...review, airline_id})
+        .then(resp => {
          
             const included = [...airline.included, resp.data.data]
             setAirline({...airline, included})
@@ -68,12 +69,28 @@ const Airline = (props) => {
         })  
         .catch(error => {console.log(error)})
     }
-
+  
+    // set score
     const setRating = (score, e) => {
         e.preventDefault()
-
         setReview({...review, score }) 
     }
+ 
+    let reviews
+    if(loaded && airline.included){
+
+        reviews = airline.included.map((item, index) => {
+            console.log('mapping', item)
+            return(
+                <Review 
+                    key={index}
+                    attributes={item.attributes}
+                />
+            )
+        })
+    }
+
+
 
     return (
         <Wrapper>
@@ -83,10 +100,9 @@ const Airline = (props) => {
                     <Main>        
                         <Header 
                             attributes={airline.data.attributes}
-                            reviews={airline.included}
-                        />
-                    
-                    <div className='reviews'></div>
+                            reviews={airline.included}                            
+                        />                  
+                        {reviews}
                     </Main>
                 </Column>
                 
