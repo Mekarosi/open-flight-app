@@ -80,25 +80,6 @@ const Wrapper = styled.div`
     padding-top: 100px;
 `
 
-const SubmitBtn = styled.div`
-    color: #fff;
-    text-align: center;
-    background: green;
-    border-radius: 4px;
-    padding:  12px;
-    font-size: 18px;
-    cursor: pointer;
-    transition: ease-in-out 0.1s;
-    border: 1px solid #fff;
-    width: 94%;
-    margin-top: 20px;
-
-    &:hover {
-        background: #fff;
-        color: #000;
-        border: 1px solid #fff;
-    }
-`
 
 const Headline = styled.div`
      padding: 20px;
