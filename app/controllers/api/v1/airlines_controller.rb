@@ -2,18 +2,23 @@ module Api
   module V1
   	class AirlinesController < ApplicationController
       protect_from_forgery with: :null_session
+      
+       # GET /api/v1/airlines
       def index
-        airlines = Airline.all 
+        @airlines = Airline.includes( :reviews).all 
 
-        render json: AirlineSerializer.new(airlines, options).serializable_hash.to_json 
+        render json: AirlineSerializer.new(@airlines, options).serializable_hash.to_json 
       end
 
+
+       # GET /api/v1/airlines/:slug  
       def show
-        airline = Airline.find_by(slug: params[:slug])
+        @airline = Airline.includes(:reviews).find_by(slug: params[:slug])
              
-        render json: AirlineSerializer.new(airline, options).serializable_hash.to_json 
+        render json: AirlineSerializer.new(@airline, options).serializable_hash.to_json 
       end
 
+      # POST /api/v1/airlines
       def create
         airline = Airline.new(airline_params)
         
@@ -24,6 +29,7 @@ module Api
         end
       end	
 
+     # PATCH /api/v1/airlines/:slug
       def update
         airline = Airline.find_by(slug: params[:slug])
         
@@ -34,6 +40,7 @@ module Api
         end
       end	
 
+       # DELETE /api/v1/airlines/:slug
       def destroy
         airline = Airline.find_by(slug: params[:slug])
         
@@ -46,6 +53,7 @@ module Api
 
     private
 
+     # Strong params
       def airline_params
       	params.require(:airline).permit(:name, :image_url)
       end

@@ -117,8 +117,8 @@ const ReviewForm = (props) => {
 
     const ratingOptions = [5,4,3,2,1].map((score, index) => {
        return(
-       <Fragment>
-           <input type='radio' key={index} value={score} checked={props.review.score == score} name='rating' onChange={()=> {console.log('selected:', score)}} id={`rating-${score}`} /> 
+       <Fragment key={index}>
+           <input type='radio' value={score} checked={props.review.score == score} name='rating' onChange={()=> {console.log('selected:', score)}} id={`rating-${score}`} /> 
            <label onClick={props.setRating.bind(this, score)}></label>
        </Fragment>
        ) 
@@ -129,7 +129,7 @@ const ReviewForm = (props) => {
   return (
     <Wrapper>
         <form onSubmit={props.handleSubmit}>
-            <Headline>Have an experience with {props.attributes.name}? Share your review!</Headline>
+            <Headline>Have an experience with {props.name}? Share your review!</Headline>
             <Field>
                 <input type='text' name='title' placeholder='Review Title' value={props.review.title} onChange={props.handleChange}/>
             </Field>
@@ -146,7 +146,15 @@ const ReviewForm = (props) => {
 
                </RatingContainer>
             </Field>
-            <SubmitBtn type='Submit'>Submit Your Review</SubmitBtn>
+           
+            <input type='submit' className='SubmitBtn' Submit Your Review 
+             
+             />
+           
+            { 
+          props.error && 
+          <Error>{props.error}</Error>
+        }
         </form>
     </Wrapper>
   )
