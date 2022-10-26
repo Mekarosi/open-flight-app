@@ -36,9 +36,4 @@
         border: 1px solid rgb(165, 187, 165);
     }
   
-    @media only screen and (min-width: 600px) {
-      .single-airline-link link {
-        width: 40px;
-        color: yellow;
-      }
-    }   
+    
