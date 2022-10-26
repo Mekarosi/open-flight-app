@@ -2,6 +2,7 @@ import React, { useState, useEffect, Fragment } from 'react'
 import axios from 'axios'
 import Header from './Header'
 import ReviewForm from './ReviewForm'
+import Review from './Review'
 import styled from 'styled-components'
 
 
@@ -30,7 +31,9 @@ const  Main = styled.div`
 const Airline = (props) => {
 
     const [airline, setAirline] = useState({})
-    const [review, setReview] = useState({})
+    const [reviews, setReviews] = useState([])
+    const [review, setReview] = useState({ title: '', description: '', score: 0 })
+    const [error, setError] = useState('')
     const [loaded, setLoaded] = useState(false)
 
     useEffect(() => {
@@ -40,40 +43,85 @@ const Airline = (props) => {
        axios.get(url)
        .then(resp => {
         setAirline(resp.data)
+        setReviews(resp.data.included)
         setLoaded(true)
+        console.log('data', resp.data.included)
      } )
-       .catch(error => console.log(error))
+     
+       .catch(data => console.log('Error', data))
     }, [])
 
+     // Modify text in review form
     const handleChange = (e) => {
-        e.preventDefault()
-
        setReview(Object.assign({}, review, {[e.target.name] : e.target.value}))
-      
-       console.log('review:', review )
     }
 
+    // Create a review
     const handleSubmit = (e) => {
         e.preventDefault()
 
-        const csrfToken = document.querySelector('[name=crsf-token]')?.content    
-        axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken
+        // const csrfToken = document.querySelector('[name=crsf-token]')?.content    
+        // axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken
         
-        const airline_id = airline.data.id
-        axios.post('/api/v1/reviews', {review, airline_id}).then(resp => {
-         
+        
+        const airline_id = parseInt(airline.data.id)
+        axios.post('/api/v1/reviews', {...review, airline_id})
+        .then(resp => {
             const included = [...airline.included, resp.data.data]
+           
+            setReviews([...reviews, resp.data.data])
             setAirline({...airline, included})
             setReview({ title: '', description: '', score: 0 })
-        })  
-        .catch(error => {console.log(error)})
-    }
-
+            setError('')
+            
+        }) 
+        
+        .catch( resp => {
+            let error
+            switch(resp.message){
+              case "Request failed with status code 401":
+                error = 'Please log in to leave a review.'
+                break
+              default:
+                error = 'Something went wrong.'
+            }
+            setError(error)
+          })
+         
+        }
+       
+    // set score
     const setRating = (score, e) => {
         e.preventDefault()
-
         setReview({...review, score }) 
     }
+
+    let total, average = 0
+    let userReviews
+
+    if (reviews && reviews.length > 0) {
+        total = reviews?.reduce((total, review) => {
+            
+          return  total + review.attributes.score, 0})
+            
+        }
+        average = total > 0 ? (parseFloat(total) / parseFloat(reviews.length)) : 0
+        
+        userReviews = reviews.map( (review, index) => {
+            
+          return (
+            <Review 
+              key={index}
+              id={review.id}
+              attributes={review.attributes}
+              
+            />
+          )
+        })
+        
+      
+
+
 
     return (
         <Wrapper>
@@ -84,9 +132,9 @@ const Airline = (props) => {
                         <Header 
                             attributes={airline.data.attributes}
                             reviews={airline.included}
-                        />
-                    
-                    <div className='reviews'></div>
+                            average={average}                            
+                        />                  
+                        {userReviews}
                     </Main>
                 </Column>
                 
@@ -97,6 +145,8 @@ const Airline = (props) => {
                     setRating={setRating}
                     attributes={airline.data.attributes}
                     review={review}
+                    name={airline.data.attributes.name}
+                    error={error}
                 />
                 </Column>
        </Fragment> 

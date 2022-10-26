@@ -80,25 +80,6 @@ const Wrapper = styled.div`
     padding-top: 100px;
 `
 
-const SubmitBtn = styled.div`
-    color: #fff;
-    text-align: center;
-    background: green;
-    border-radius: 4px;
-    padding:  12px;
-    font-size: 18px;
-    cursor: pointer;
-    transition: ease-in-out 0.1s;
-    border: 1px solid #fff;
-    width: 94%;
-    margin-top: 20px;
-
-    &:hover {
-        background: #fff;
-        color: #000;
-        border: 1px solid #fff;
-    }
-`
 
 const Headline = styled.div`
      padding: 20px;
@@ -117,7 +98,7 @@ const ReviewForm = (props) => {
 
     const ratingOptions = [5,4,3,2,1].map((score, index) => {
        return(
-       <Fragment>
+       <Fragment key={index}>
            <input type='radio' value={score} checked={props.review.score == score} name='rating' onChange={()=> {console.log('selected:', score)}} id={`rating-${score}`} /> 
            <label onClick={props.setRating.bind(this, score)}></label>
        </Fragment>
@@ -129,7 +110,7 @@ const ReviewForm = (props) => {
   return (
     <Wrapper>
         <form onSubmit={props.handleSubmit}>
-            <Headline>Have an experience with {props.attributes.name}? Share your review!</Headline>
+            <Headline>Have an experience with {props.name}? Share your review!</Headline>
             <Field>
                 <input type='text' name='title' placeholder='Review Title' value={props.review.title} onChange={props.handleChange}/>
             </Field>
@@ -146,7 +127,15 @@ const ReviewForm = (props) => {
 
                </RatingContainer>
             </Field>
-            <SubmitBtn type='Submit'>Submit Your Review</SubmitBtn>
+           
+            <input type='submit' className='SubmitBtn' Submit Your Review 
+             
+             />
+           
+            { 
+          props.error && 
+          <Error>{props.error}</Error>
+        }
         </form>
     </Wrapper>
   )

@@ -1,5 +1,7 @@
 import React from 'react'
+import Rating from './Rating'
 import { BrowserRouter as Router, Link } from 'react-router-dom'
+
 import styled from 'styled-components'
 
 const Card = styled.div`
@@ -28,10 +30,14 @@ const AirlineName = styled.div`
 
 
 ` 
-const AirlineScore= styled.div`` 
+
+
 const LinkWrapper = styled.div`
-    margin: 30px 0 20px 0;
+    margin: 30px 0 20px 25px;
+   
     height: 50px;
+    width: 200px;
+    
 
     a {
         color: #fff;
@@ -51,9 +57,9 @@ const SingleAirline = (props) => {
             <img src={props.attributes.image_url} alt={props.attributes.name}/>  
         </AirlineLogo>
         <AirlineName>{props.attributes.name}</AirlineName>
-        <div className='airline-score'>{props.attributes.avg_score}</div>
+        <Rating score={props.attributes.avg_score} />
         <LinkWrapper>
-            <Link to={`/airlines/${props.attributes.slug}`}>View Airline</Link>
+            <Link to={`/airlines/${props.attributes.slug}`} className='single-airline-link'>View Airline</Link>
         </LinkWrapper>
     </Card >
   )
