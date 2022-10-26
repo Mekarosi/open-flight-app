@@ -33,11 +33,20 @@ const AirlineName = styled.div`
 
 
 const LinkWrapper = styled.div`
-    margin: 30px 0 20px 25px;
-   
-    height: 50px;
-    width: 200px;
     
+    height: 50px;
+    width: 100%;
+    @media only screen and (min-width: 600px) {  
+        margin: 30px 25px 20px 0px;
+        width: 200px
+        
+    }
+    @media only screen and (min-width: 768px) {
+        margin: 30px 0 20px 25px;
+    }  
+    @media only screen and (max-width: 600px) {
+        margin: 30px 25px 20px 0px;
+    }
 
     a {
         color: #fff;
