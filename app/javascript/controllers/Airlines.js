@@ -29,6 +29,24 @@ const Grid = styled.div`
     grid-gap: 20px;
     width: 100%;
     padding:20px;
+    @media only screen and (min-width: 600px) {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 20px;
+        
+    } 
+    @media only screen and (min-width: 768px) {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-gap: 20px;
+        
+    }
+    @media only screen and (max-width: 600px) {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        grid-gap: 20px;
+       
+    }
 `
 
 
