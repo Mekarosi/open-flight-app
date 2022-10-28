@@ -88,6 +88,7 @@ test:
 #
 production:
   <<: *default
+  url: <%= ENV["DATABASE_URL"] %>
   database: open_flights_app_production
   username: postgres
   password: <%= ENV["OPEN_FLIGHTS_DATABASE_PASSWORD"] %>
